@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poll Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .banner {
+      background-color: #3498db;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .question {
+      margin-bottom: 30px;
+    }
+    .question h2 {
+      margin-bottom: 10px;
+    }
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .vote-button {
+      background-color: #3498db;
+      color: #fff;
+    }
+    .vote-button:hover {
+      background-color: #2980b9;
+    }
+    .results-button {
+      background-color: #2ecc71;
+      color: #fff;
+    }
+    .results-button:hover {
+      background-color: #27ae60;
+    }
+    .result {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <h1>Poll Website</h1>
+  </div>
+  <div class="container">
+    <div class="question">
+      <h2>Question 1: Which color do you prefer?</h2>
+      <div class="options">
+        <button id="q1_vote_button" class="button vote-button" onclick="toggleView('q1')">Vote</button>
+        <button id="q1_results_button" class="button results-button" onclick="toggleView('q1')">Results</button>
+      </div>
+      <div id="q1_vote" class="options" style="display: none;">
+        <button class="button vote-button" onclick="vote(1, 'Blue')">Blue</button>
+        <button class="button vote-button" onclick="vote(1, 'Red')">Red</button>
+      </div>
+      <div id="q1_results" class="result" style="display: none;"></div>
+    </div>
+    <div class="question">
+      <h2>Question 2: Which animal is your favorite?</h2>
+      <div class="options">
+        <button id="q2_vote_button" class="button vote-button" onclick="toggleView('q2')">Vote</button>
+        <button id="q2_results_button" class="button results-button" onclick="toggleView('q2')">Results</button>
+      </div>
+      <div id="q2_vote" class="options" style="display: none;">
+        <button class="button vote-button" onclick="vote(2, 'Dog')">Dog</button>
+        <button class="button vote-button" onclick="vote(2, 'Cat')">Cat</button>
+      </div>
+      <div id="q2_results" class="result" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script>
+    var votes = {1: {Blue: 0, Red: 0}, 2: {Dog: 0, Cat: 0}};
+
+    function vote(questionNumber, option) {
+      votes[questionNumber][option]++;
+      showResults(questionNumber);
+    }
+
+    function showResults(questionNumber) {
+      var resultDiv = document.getElementById('q' + questionNumber + '_results');
+      var voteDiv = document.getElementById('q' + questionNumber + '_vote');
+      var voteButton = document.getElementById('q' + questionNumber + '_vote_button');
+      var resultsButton = document.getElementById('q' + questionNumber + '_results_button');
+
+      resultDiv.innerHTML = '';
+      for (var option in votes[questionNumber]) {
+        resultDiv.innerHTML += option + ': ' + votes[questionNumber][option] + '<br>';
+      }
+
+      voteDiv.style.display = 'none';
+      resultDiv.style.display = 'block';
+      voteButton.disabled = false;
+      resultsButton.disabled = true;
+    }
+
+    function toggleView(questionId) {
+      var voteDiv = document.getElementById(questionId + '_vote');
+      var resultDiv = document.getElementById(questionId + '_results');
+      var voteButton = document.getElementById(questionId + '_vote_button');
+      var resultsButton = document.getElementById(questionId + '_results_button');
+
+      if (voteDiv.style.display === 'none') {
+        voteDiv.style.display = 'flex';
+        resultDiv.style.display = 'none';
+        voteButton.disabled = true;
+        resultsButton.disabled = false;
+      } else {
+        showResults(questionId.substring(1));
+      }
+    }
+  </script>
+</body>
+</html>
